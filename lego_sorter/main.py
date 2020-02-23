@@ -8,40 +8,28 @@ from pybricks.robotics import DriveBase
 from pybricks.media.ev3dev import SoundFile, ImageFile
 from pybricks.iodevices import AnalogSensor, UARTDevice
 
-import utime, serial, string, math
+import utime, serial, string, math 
+import IPython.display, imutils
+from matplotlib import pyplot as pyplot
 
 '''
 SETUP OF SENSORS AND MOTORS
 '''
 ev3 = EV3Brick()
-paddle = Motor(Port.C)
-belt = Motor(Port.D)
-#shaker = Motor(Port.B)
-#s = serial.Serial('dev/serial0/', 9600)
+#paddle = Motor(Port.S1)
+#belt1 = Motor(Port.S2)
+camera = UARTDevice(Port.S4, 9600, timeout = 2000) # two seconds
 
 '''
 DEFINING FUNCTIONS
 '''
-'''
 def get_Image_test():
-    s.write(b'1')
-    array1 = []
-    while arrray == []:
-       array1 == s.read
-       delay(500):
-    return array
+    camera.write("Hello RPI".encode())
+    message = camera.read(camera.waiting())
+    print(message.decode())
 
-'''
-
-def detect_Color(array1):
-    '''
-    read in array of pixel data
-    [red, blue, green]
-    '''
-    for line in array
-    red = array1[]
-
-    print("done")
+def detect_Color(imgfile):
+    print("DONE")
 
 
 
@@ -54,15 +42,4 @@ MAIN LOOP
 ev3.speaker.beep()
 
 while True:
-    #get_Image_test()
-    belt.dc(40)
-    paddle.dc(55)
-    
-
-    wait(100)
-    paddle.stop()
-    wait(1000)
-    paddle.dc(-55)
-    wait(100)
-    paddle.stop()
-    wait(1000)
+    get_Image_test()
