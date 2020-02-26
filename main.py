@@ -9,16 +9,56 @@ from pybricks.media.ev3dev import SoundFile, ImageFile
 from pybricks.iodevices import AnalogSensor, UARTDevice
 
 import utime, serial, string, math 
-import IPython.display, imutils
-from matplotlib import pyplot as pyplot
+#import IPython.display, imutils
+#from matplotlib import pyplot as pyplot
+
+from pybricks.iodevices import AnalogSensor, UARTDevice
+
+
+# Write your program here
+ev3 = EV3Brick()
+uart = UARTDevice(Port.S4, 9600, timeout=200)
+paddle = Motor(Port.C)
+belt = Motor(Port.D)
+pusher = Motor(Port.B)
+ev3.speaker.beep()
+wait(500)
+paddle_closed = 0
+message = ''
+while True:
+    belt.dc(23)
+    pusher.dc(10)
+    try:
+       # uart.write('PLEASE WORK'.encode())
+       # wait(50)
+       if(uart.waiting() > 1):
+            message = uart.read(1)
+            # print(message)
+            # print(type(message))
+           # message = message.decode('utf-8') # not too many options on pybricks micropython
+            print("The Message is: ", message)
+    except:
+        # message = uart.read()
+        print("FAILED MESSAGE: ", message)
+        print(type(message))
+    
+    if(message == b'2' and paddle_closed == 0):
+        paddle.run_angle(100, 90, stop_type = Stop.HOLD, wait = False)
+        belt.run_time(100, 2500)
+        paddle.run_angle(100, -90, stop_type = Stop.HOLD, wait = False)
+        paddle_closed = 1
+
+    if(message == b'0' and paddle_closed == 1):
+        paddle_closed = 0
+
 
 '''
 SETUP OF SENSORS AND MOTORS
 '''
-ev3 = EV3Brick()
-#paddle = Motor(Port.S1)
-#belt1 = Motor(Port.S2)
-camera = UARTDevice(Port.S4, 9600, timeout = 2000) # two seconds
+
+
+
+#camera = UARTDevice(Port.S4, 9600, timeout = 2000) # two seconds
 
 '''
 DEFINING FUNCTIONS
@@ -39,7 +79,5 @@ def detect_Color(imgfile):
 MAIN LOOP
 '''
 
-ev3.speaker.beep()
-
-while True:
-    get_Image_test()
+#     get_Image_test()
+   
